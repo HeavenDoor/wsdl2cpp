@@ -1,0 +1,30 @@
+ wsdl2h 不能使用-o 命令参数，也不能通过http://方式指定源文件，
+否则只能在console窗口显示文件，不能输出
+
+
+1)使用wsdl2h命令，从wsdl文件中提取web service的信息到.h文件中
+
+ wsdl2h -N tx hellojava.wsdl
+
+我的电脑是WinXP sp2，-o参数无效，并且wsdl文件也不能通过指定url来获取
+
+2)使用soapcpp2命令，编译刚才生成的.h文件中，产生代理类以及其他文件
+
+比如：DataServiceSoap.nsmap、soapC.cpp、soapClient.cpp、soapClientLib.cpp、soapDataServiceSoapProxy.h、soapStub.h
+
+3)建立vc8工程，注意引入wsock32.lib库文件，其余头文件找不到的时候，再进行相应的路径设置
+
+4)将soapH.h、soapStub.h、stdsoap2.h、soapC.cpp、soapClient.cpp、stdsoap2.cpp加入到工程，注意千万不要多加文件，否则会可能导致编译链接的问题一大堆
+5)取消使用预编译头的默认设置
+6)字符设置：Use Multi-Byte Character Set
+7)添加两个文件的include指令，否则链接失败
+#include "soaphellojavaSoapProxy.h"
+#include "hellojavaSoap.nsmap"
+
+VersionLinkServiceSoap(const std::string &url)
+ { soap = soap_new(); endpoint = url.c_str();
+  //soap = soap_new();
+  //endpoint = "http://localhost/versionlinkserviceV83/versionlinkservice.asmx";
+
+                                
+
